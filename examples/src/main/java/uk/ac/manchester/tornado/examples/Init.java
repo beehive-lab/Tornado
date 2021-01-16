@@ -36,6 +36,10 @@ public class Init {
 
     private static final boolean CHECK = true;
 
+    /**
+     * Adds 100 to every value of an array
+     * @param array Input Array
+     */
     public static void compute(float[] array) {
         for (@Parallel int i = 0; i < array.length; i++) {
             array[i] = array[i] + 100;
@@ -44,6 +48,7 @@ public class Init {
 
     public static void main(String[] args) {
 
+        // Reads the first program argument for the size of the array
         int size = 300000000;
         if (args.length > 0) {
             size = Integer.parseInt(args[0]);
@@ -51,6 +56,7 @@ public class Init {
 
         BigDecimal bytesToAllocate = new BigDecimal(((float) ((long) (size) * 4) * (float) 1E-6));
         System.out.println("Running with size: " + size);
+        // Allocate the bytes of the input
         System.out.println("Input size: " + bytesToAllocate + " (MB)");
         float[] array = new float[size];
 

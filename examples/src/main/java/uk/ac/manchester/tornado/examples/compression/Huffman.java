@@ -39,6 +39,11 @@ public class Huffman {
     private static boolean CHECK_RESULT = true;
     private static boolean CHECK_DECODE_ONLY = false;
 
+    /**
+     * Converts a given String to a binary
+     * @param binary input String
+     * @return computed Binary
+     */
     private static BitSet convertStringToBinary(String binary) {
         BitSet bitset = new BitSet(binary.length());
         for (int i = 0; i < binary.length(); i++) {
@@ -72,7 +77,13 @@ public class Huffman {
         return frequencies;
     }
 
-    public static void huffmanDecoding(ArrayList<Integer> inputData) throws ClassNotFoundException, IOException {
+    /**
+     * Method to decode a given list of Integers with the Huffman-Coding
+     * @param inputData List of Integers to decode
+     * @throws IOException is thrown if the input could not be read
+     * @see <a href="https://en.wikipedia.org/wiki/Huffman_coding">Huffman Coding</a>
+     */
+    public static void huffmanDecoding(ArrayList<Integer> inputData) throws IOException {
         System.out.println("5. Reading file for decompressing");
         FileInputStream iStream = new FileInputStream("/tmp/huffman.txt");
         @SuppressWarnings("resource") ObjectInputStream inObject = new ObjectInputStream(iStream);
@@ -110,6 +121,16 @@ public class Huffman {
         System.out.println("Decoding time: " + (s1 - s0) + " (ns)");
     }
 
+    /**
+     *
+     * @param input
+     * @param frequencies
+     * @param data
+     * @param left
+     * @param right
+     * @param message
+     * @param inputData
+     */
     private static void decodeTornado(byte[] input, int[] frequencies, int[] data, int[] left, int[] right, int[] message, ArrayList<Integer> inputData) {
 
         // @formatter:off
@@ -129,6 +150,15 @@ public class Huffman {
         }
     }
 
+    /**
+     *
+     * @param input
+     * @param frequencies
+     * @param data
+     * @param left
+     * @param right
+     * @param output
+     */
     private static void decodeTornadoKernel(byte[] input, int[] frequencies, int[] data, int[] left, int[] right, int[] output) {
         final int rootNode = 0;
         int iteratorNode = 0;
@@ -151,6 +181,11 @@ public class Huffman {
         }
     }
 
+    /**
+     * Method to read a given input file
+     * @return ArrayList<Integer>: content of the input file
+     * @throws IOException is thrown if the given input can not be read
+     */
     public static ArrayList<Integer> readInputFile() throws IOException {
         long ss0 = System.nanoTime();
         ArrayList<Integer> inputData = InputScanner.getIntNumbers("/tmp/framesNonCompress.txt");
@@ -159,6 +194,12 @@ public class Huffman {
         return inputData;
     }
 
+    /**
+     *
+     * @param dataKeyToCompress
+     * @param frequencyArray
+     * @return
+     */
     public static HuffmanNode huffmanEncoding(int[] dataKeyToCompress, int[] frequencyArray) {
         int n = dataKeyToCompress.length;
         PriorityQueue<HuffmanNode> queue = new PriorityQueue<HuffmanNode>(n, new HuffmanTreeComparator());
@@ -194,6 +235,12 @@ public class Huffman {
         return root;
     }
 
+    /**
+     * Writes the compressed Huffman into a file
+     * @param root Node
+     * @param inputData ArrayList<Integer> storing the input
+     * @throws IOException
+     */
     public static void writeCompressedHuffmanIntoFile(HuffmanNode root, ArrayList<Integer> inputData) throws IOException {
         int numNodes = getNumNodes(root);
         System.out.println("NUM NODES: " + numNodes);

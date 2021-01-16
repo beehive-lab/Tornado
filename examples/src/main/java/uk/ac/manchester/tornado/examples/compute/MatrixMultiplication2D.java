@@ -27,6 +27,13 @@ public class MatrixMultiplication2D {
 
     private static final int WARMING_UP_ITERATIONS = 15;
 
+    /**
+     * Multiplies two 2D-matrices and stores the result in a third matrix
+     * @param A First matrix
+     * @param B Second matrix
+     * @param C Result matrix
+     * @param size Size of the matrices
+     */
     private static void matrixMultiplication(Matrix2DFloat A, Matrix2DFloat B, Matrix2DFloat C, final int size) {
         for (@Parallel int i = 0; i < size; i++) {
             for (@Parallel int j = 0; j < size; j++) {
@@ -109,6 +116,13 @@ public class MatrixMultiplication2D {
         System.out.println("\tVerification " + verify(matrixC, resultSeq, size));
     }
 
+    /**
+     * Checks whether the rounding error of the matrix multiplication and the multiplication with TornadoVM is less than 0.1
+     * @param par Result matrix of the matrix multiplication method
+     * @param seq Result of the matrix multiplication with TornadoVM
+     * @param size Size of the matrices
+     * @return True (if the rounding error is less than 0.1) or false (else)
+     */
     private static boolean verify(Matrix2DFloat par, Matrix2DFloat seq, int size) {
         boolean check = true;
         for (int i = 0; i < size; i++) {

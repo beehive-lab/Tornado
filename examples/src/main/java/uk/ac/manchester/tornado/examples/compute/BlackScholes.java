@@ -28,7 +28,7 @@ import uk.ac.manchester.tornado.api.collections.math.TornadoMath;
 /**
  * BlackScholes implementation adapted from AMD-OpenCL examples and Marawacc
  * compiler framework.
- *
+ * @see <a href="https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model>Black-scholes model</a>
  */
 public class BlackScholes {
 
@@ -75,6 +75,14 @@ public class BlackScholes {
         return (X < zero) ? (one - y) : y;
     }
 
+    /**
+     * Checks the result
+     * @param call
+     * @param put
+     * @param callPrice
+     * @param putPrice
+     * @return
+     */
     private static boolean checkResult(float[] call, float[] put, float[] callPrice, float[] putPrice) {
         double delta = 1.8;
         for (int i = 0; i < call.length; i++) {

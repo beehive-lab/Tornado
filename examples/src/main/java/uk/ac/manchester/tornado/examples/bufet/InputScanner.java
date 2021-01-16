@@ -46,6 +46,16 @@ public class InputScanner {
         return list;
     }
 
+    /**
+     * Reads strings from a file (divided by a specific delimiter)
+     * @param fileName Path to the file to read from
+     * @param delimiter Delimiter between two strings
+     * @param StrPosA First string
+     * @param StrPosB Second string
+     * @param UniqueOccur
+     * @return HashMap
+     * @throws IOException
+     */
     public static HashMap<String, ArrayList<String>> readString(String fileName, String delimiter, int StrPosA, int StrPosB, boolean UniqueOccur) throws IOException {
 
         HashMap<String, ArrayList<String>> map = new HashMap<>();
@@ -79,6 +89,11 @@ public class InputScanner {
         return map;
     }
 
+    /**
+     * Writes all items of an ArrayList into a file
+     * @param fileName Path to the file where the list should be written in
+     * @param text ArrayList to write into the file
+     */
     public static void writeString(String fileName, ArrayList<String> text) {
 
         try {

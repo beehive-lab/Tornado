@@ -51,8 +51,8 @@ public class BFS {
      * Set to one the connection between node from and node to into the
      * adjacency matrix.
      *
-     * @param from
-     * @param to
+     * @param from starting-point where the connection should start
+     * @param to end-point of the connection
      * @param graph
      * @param N
      */
@@ -65,8 +65,8 @@ public class BFS {
     /**
      * It builds a simple graph just for showing the example.
      *
-     * @param adjacencyMatrix
-     * @param numNodes
+     * @param adjacencyMatrix matrix to build the graph from
+     * @param numNodes number of Nodes
      */
     public static void initilizeAdjacencyMatrixSimpleGraph(int[] adjacencyMatrix, int numNodes) {
         Arrays.fill(adjacencyMatrix, 0);
@@ -78,6 +78,11 @@ public class BFS {
         connect(3, 4, adjacencyMatrix, numNodes);
     }
 
+    /**
+     * Generates a random Array containing integers
+     * @param numNodes number of Nodes
+     * @return
+     */
     private static int[] generateIntRandomArray(int numNodes) {
         Random r = new Random();
         int bound = r.nextInt(numNodes);
@@ -85,6 +90,12 @@ public class BFS {
         return streamArray.toArray();
     }
 
+    /**
+     * Generates a random graph from a given matrix
+     * @param adjacencyMatrix Matrix of which the graph should be build
+     * @param numNodes Number of nodes
+     * @param root
+     */
     public static void generateRandomGraph(int[] adjacencyMatrix, int numNodes, int root) {
         Random r = new Random();
         int bound = r.nextInt(numNodes);
@@ -105,6 +116,12 @@ public class BFS {
         }
     }
 
+    /**
+     * Method to initialize every vertice with either a 0 (if it is the root) or with a -1 (if it is not the root)
+     * @param numNodes number of nodes
+     * @param vertices
+     * @param root
+     */
     private static void initializeVertices(int numNodes, int[] vertices, int root) {
         for (@Parallel int i = 0; i < numNodes; i++) {
             if (i == root) {
@@ -115,6 +132,15 @@ public class BFS {
         }
     }
 
+    /**
+     * Method to run the Breadth-Fist search
+     * @param vertices
+     * @param adjacencyMatrix
+     * @param numNodes
+     * @param h_true
+     * @param currentDepth
+     * @see <a href="https://brilliant.org/wiki/breadth-first-search-bfs/">Breadth-First Search</a>
+     */
     private static void runBFS(int[] vertices, int[] adjacencyMatrix, int numNodes, int[] h_true, int[] currentDepth) {
         for (@Parallel int from = 0; from < numNodes; from++) {
             for (@Parallel int to = 0; to < numNodes; to++) {

@@ -69,6 +69,9 @@ public class ArrayAddFloatOS {
             }
         }
 
+        /**
+         * Checks if the result throws an error
+         */
         if (errors > 0) {
             System.out.printf("Invalid result: %d errors\n", errors);
             return;

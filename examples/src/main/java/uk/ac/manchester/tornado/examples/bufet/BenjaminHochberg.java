@@ -28,6 +28,14 @@ public class BenjaminHochberg {
     private ArrayList<Double> indexList = new ArrayList<>();
     private ArrayList<String> fdrList = new ArrayList<>();
 
+    /**
+     * Conceptualizes the rate of type-1 errors in null hyptohesis testing
+     * @param checkGO
+     * @param nocheckGO
+     * @param pvalues
+     * @param miRNA_groups
+     * @see <a href="https://en.wikipedia.org/wiki/False_discovery_rate">False discovery rate (Benjamini-Hochberg)</a>
+     */
     public void benjaminHochberg(HashMap<String, ArrayList<String>> checkGO, HashMap<String, ArrayList<String>> nocheckGO, long[] pvalues, int miRNA_groups) {
 
         int totalGo = checkGO.size();

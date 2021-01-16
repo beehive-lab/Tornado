@@ -46,6 +46,12 @@ public class Mandelbrot {
         public MandelbrotImage() {
         }
 
+        /**
+         * Makes the mandelbrot-set for a given size
+         * @param size Size of the sequence
+         * @return
+         * @see <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">Mandelbrot set</a>
+         */
         private static short[] mandelbrotSequential(int size) {
             final int iterations = 10000;
             float space = 2.0f / size;
@@ -80,6 +86,11 @@ public class Mandelbrot {
             return result;
         }
 
+        /**
+         * Makes a Mandelbrot-set with TornadoVM
+         * @param size Size of the sequence
+         * @param output
+         */
         private static void mandelbrotTornado(int size, short[] output) {
             final int iterations = 10000;
             float space = 2.0f / size;

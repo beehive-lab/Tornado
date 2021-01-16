@@ -36,6 +36,13 @@ public class Integration {
         return (float) (1 / ((x + 1) * Math.sqrt(x * Math.exp(x))));
     }
 
+    /**
+     *
+     * @param size
+     * @param a
+     * @param b
+     * @return
+     */
     public float integrationSequential(int size, final float a, final float b) {
         float sum = 0.0f;
         for (int i = 1; i < (size + 1); i++) {

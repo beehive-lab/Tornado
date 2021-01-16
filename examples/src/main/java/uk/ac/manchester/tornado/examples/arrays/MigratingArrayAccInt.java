@@ -27,6 +27,11 @@ import uk.ac.manchester.tornado.api.runtime.TornadoRuntime;
 
 public class MigratingArrayAccInt {
 
+    /**
+     * Adds a sepcific value to every index of an array
+     * @param a Array to add the value to
+     * @param value Value to add
+     */
     public static void acc(int[] a, int value) {
         for (@Parallel int i = 0; i < a.length; i++) {
             a[i] += value;

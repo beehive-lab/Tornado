@@ -61,6 +61,9 @@ public class BlackAndWhiteTransform {
 
         private static TaskSchedule tornadoTask;
 
+        /**
+         * Loads the image
+         */
         LoadImage() {
             try {
                 image = ImageIO.read(new File(IMAGE_FILE));
@@ -69,6 +72,12 @@ public class BlackAndWhiteTransform {
             }
         }
 
+        /**
+         *
+         * @param image
+         * @param w
+         * @param s
+         */
         private static void compute(int[] image, final int w, final int s) {
             for (@Parallel int i = 0; i < w; i++) {
                 for (@Parallel int j = 0; j < s; j++) {
@@ -86,6 +95,12 @@ public class BlackAndWhiteTransform {
             }
         }
 
+        /**
+         *
+         * @param image
+         * @param w
+         * @param s
+         */
 	private static void compute1D(int[] image, final int w, final int s) {
             for (@Parallel int i = 0; i < w * s; i++) {
                 int rgb = image[i];
@@ -101,6 +116,10 @@ public class BlackAndWhiteTransform {
             }
         }
 
+        /**
+         * Writes the Image into the "/tmp/" folder
+         * @param fileName path to the image
+         */
         private void writeImage(String fileName) {
             try {
                 ImageIO.write(image, "jpg", new File("/tmp/" + fileName));
@@ -109,6 +128,10 @@ public class BlackAndWhiteTransform {
             }
         }
 
+        /**
+         * Computes
+         * @param g
+         */
         private void parallelComputation(Graphics g) {
             int w = image.getWidth();
             int s = image.getHeight();

@@ -33,6 +33,12 @@ public class FlatMapExample {
 
     private static final int SIZE = 16;
 
+    /**
+     * Simple method to compute the memory allocation of a FlatMap
+     * @param input array for the specified input
+     * @param output array with the allocated size for the computed output
+     * @param size
+     */
     private static void computeFlatMap(float[] input, float[] output, final int size) {
         for (@Parallel int i = 0; i < size; i++) {
             if (input[i] > 100) {

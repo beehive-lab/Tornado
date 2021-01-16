@@ -27,6 +27,13 @@ public class MatrixMultiplication1D {
 
     private static final int WARMING_UP_ITERATIONS = 150;
 
+    /**
+     * Multiplies two 1D-matrices and stores the result into a third one
+     * @param A Matrix 1
+     * @param B Matrix 2
+     * @param C Result matrix
+     * @param size Size of the matrices
+     */
     private static void matrixMultiplication(final float[] A, final float[] B, final float[] C, final int size) {
         for (@Parallel int i = 0; i < size; i++) {
             for (@Parallel int j = 0; j < size; j++) {
@@ -106,6 +113,13 @@ public class MatrixMultiplication1D {
         System.out.println("\tVerification " + verify(matrixC, resultSeq, size));
     }
 
+    /**
+     *
+     * @param par
+     * @param seq
+     * @param size
+     * @return
+     */
     private static boolean verify(float[] par, float[] seq, int size) {
         boolean check = true;
         for (int i = 0; i < size; i++) {

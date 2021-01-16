@@ -27,6 +27,12 @@ public class HilbertMatrix {
     private static int NROWS = 1024;
     private static int NCOLS = 1024;
 
+    /**
+     * Computes a Hilbert Matrix
+     * @param output array where the output should be stored
+     * @param rows number of rows
+     * @param cols number of columns
+     */
     public static void hilberComputation(float[] output, int rows, int cols) {
         for (@Parallel int i = 0; i < rows; i++) {
             for (@Parallel int j = 0; j < cols; j++) {

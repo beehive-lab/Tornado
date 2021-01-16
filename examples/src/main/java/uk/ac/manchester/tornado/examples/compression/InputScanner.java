@@ -27,6 +27,12 @@ import java.util.Scanner;
 
 public class InputScanner {
 
+    /**
+     * Method to read a file and store the content into an ArrayList
+     * @param fileName path to the input file
+     * @return ArrayList storing the content of the file
+     * @throws IOException
+     */
     public static ArrayList<Integer> getIntNumbers(String fileName) throws IOException {
         ArrayList<Integer> list = new ArrayList<>();
         Scanner scanner = null;

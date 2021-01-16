@@ -57,7 +57,7 @@ public class Euler {
      * supporting break statements within loops.
      * 
      * @param size
-     *            input suze
+     *            input size
      * @param five
      *            input array
      * @param outputA
@@ -96,6 +96,10 @@ public class Euler {
         }
     }
 
+    /**
+     * Method to run
+     * @param size
+     */
     private static void runSequential(int size) {
         long[] input = init(size);
         long[] outputA = new long[size];

@@ -29,6 +29,11 @@ public class ArrayAddFloat {
     public static final int ONE_MEGABYTE = 1 * 1024 * 1024;
     public static final int ONE_KILOBYTE = 1 * 1024;
 
+    /**
+     * Formats a double value into (giga-/mega-/kilo-)bytes per second
+     * @param bytes Double value to format
+     * @return
+     */
     public static final String formatBytesPerSecond(final double bytes) {
         String out = "";
 

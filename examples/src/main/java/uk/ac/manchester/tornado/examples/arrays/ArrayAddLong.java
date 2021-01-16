@@ -25,6 +25,12 @@ import uk.ac.manchester.tornado.api.annotations.Parallel;
 
 public class ArrayAddLong {
 
+    /**
+     * Sums up the (long) values of two arrays and stores them in a third array (for every index)
+     * @param a First array
+     * @param b Second array
+     * @param c Result array
+     */
     public static void add(long[] a, long[] b, long[] c) {
         for (@Parallel int i = 0; i < c.length; i++) {
             c[i] = a[i] + b[i];

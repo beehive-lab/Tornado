@@ -25,6 +25,11 @@ import uk.ac.manchester.tornado.api.annotations.Parallel;
 
 public class ArrayAccInt {
 
+    /**
+     * Adds a given value to every integer of an array
+     * @param a Array to add the values to
+     * @param value Value to add
+     */
     public static void acc(int[] a, int value) {
         for (@Parallel int i = 0; i < a.length; i++) {
             a[i] += value;

@@ -25,6 +25,12 @@ import uk.ac.manchester.tornado.api.annotations.Parallel;
 
 public class ArrayAddDouble {
 
+    /**
+     * Sums up the (double) values of two arrays and stores them in a third array (for every index)
+     * @param a double First array
+     * @param b double Second array
+     * @param c double Result array
+     */
     public static void add(double[] a, double[] b, double[] c) {
         for (@Parallel int i = 0; i < c.length; i++) {
             c[i] = a[i] + b[i];
