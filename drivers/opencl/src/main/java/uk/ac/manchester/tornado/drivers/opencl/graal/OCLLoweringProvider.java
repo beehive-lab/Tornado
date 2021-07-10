@@ -95,7 +95,6 @@ import uk.ac.manchester.tornado.drivers.opencl.OCLTargetDescription;
 import uk.ac.manchester.tornado.drivers.opencl.graal.lir.OCLKind;
 import uk.ac.manchester.tornado.drivers.opencl.graal.lir.OCLWriteAtomicNode;
 import uk.ac.manchester.tornado.drivers.opencl.graal.lir.OCLWriteAtomicNode.ATOMIC_OPERATION;
-import uk.ac.manchester.tornado.drivers.opencl.graal.lir.OCLWriteNode;
 import uk.ac.manchester.tornado.drivers.opencl.graal.nodes.AtomicAddNode;
 import uk.ac.manchester.tornado.drivers.opencl.graal.nodes.CastNode;
 import uk.ac.manchester.tornado.drivers.opencl.graal.nodes.FixedArrayNode;
@@ -362,10 +361,6 @@ public class OCLLoweringProvider extends DefaultJavaLoweringProvider {
         graph.replaceFixedWithFixed(storeIndexed, memoryWrite);
     }
 
-    private boolean isSimpleCharOrShort(JavaKind elementKind, ValueNode value) {
-        return (elementKind == JavaKind.Char && value.getStackKind() != JavaKind.Object) || (elementKind == JavaKind.Short && value.getStackKind() != JavaKind.Object);
-    }
-
     @Override
     public void lowerStoreIndexedNode(StoreIndexedNode storeIndexed, LoweringTool tool) {
         StructuredGraph graph = storeIndexed.graph();
@@ -597,17 +592,15 @@ public class OCLLoweringProvider extends DefaultJavaLoweringProvider {
 
     private AbstractWriteNode createMemWriteNode(JavaKind elementKind, ValueNode value, ValueNode array, AddressNode address, StructuredGraph graph, StoreIndexedNode storeIndexed) {
         AbstractWriteNode memoryWrite;
-        if (isSimpleCharOrShort(elementKind, value)) {
-            // XXX: This call is due to an error in Graal when storing a variable of type
-            // char or short. In future integrations with JVMCI and Graal, this issue is
-            // completely solved.
-            memoryWrite = graph.add(new OCLWriteNode(address, NamedLocationIdentity.getArrayLocation(elementKind), value, OnHeapMemoryAccess.BarrierType.NONE, elementKind));
-        } else if (isLocalIDNode(storeIndexed) || isPrivateIDNode(storeIndexed)) {
+        if (isLocalIDNode(storeIndexed) || isPrivateIDNode(storeIndexed)) {
             address = createArrayLocalAddress(graph, array, storeIndexed.index());
-            memoryWrite = graph.add(new WriteNode(address, NamedLocationIdentity.getArrayLocation(elementKind), value, OnHeapMemoryAccess.BarrierType.NONE));
-        } else {
-            memoryWrite = graph.add(new WriteNode(address, NamedLocationIdentity.getArrayLocation(elementKind), value, OnHeapMemoryAccess.BarrierType.NONE));
         }
+        ValueNode storeConvertValue = value;
+        Stamp valueStamp = value.stamp(NodeView.DEFAULT);
+        if (!(valueStamp instanceof OCLStamp) || !((OCLStamp) valueStamp).getOCLKind().isVector()) {
+            storeConvertValue = implicitStoreConvert(graph, elementKind, value);
+        }
+        memoryWrite = graph.add(new WriteNode(address, NamedLocationIdentity.getArrayLocation(elementKind), storeConvertValue, OnHeapMemoryAccess.BarrierType.NONE));
         return memoryWrite;
     }
 }

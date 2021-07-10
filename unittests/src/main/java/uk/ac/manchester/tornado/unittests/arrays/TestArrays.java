@@ -74,9 +74,21 @@ public class TestArrays extends TornadoTestBase {
         }
     }
 
+    public static void vectorAddByte(byte[] a, byte[] b, byte[] c) {
+        for (@Parallel int i = 0; i < c.length; i++) {
+            c[i] = (byte) (a[i] + b[i]);
+        }
+    }
+
     public static void addChars(char[] a, int[] b) {
         for (@Parallel int i = 0; i < a.length; i++) {
             a[i] += b[i];
+        }
+    }
+
+    public static void initializeSequentialByte(byte[] a) {
+        for (int i = 0; i < a.length; i++) {
+            a[i] = 21;
         }
     }
 
@@ -117,6 +129,23 @@ public class TestArrays extends TornadoTestBase {
 
         for (int i = 0; i < N; i++) {
             assertEquals(i + numKernels, data[i]);
+        }
+    }
+
+    @Test
+    public void testInitByteArray() {
+        final int N = 128;
+        byte[] data = new byte[N];
+
+        TaskSchedule s0 = new TaskSchedule("s0");
+        assertNotNull(s0);
+
+        s0.task("t0", TestArrays::initializeSequentialByte, data);
+        s0.streamOut(data).warmup();
+        s0.execute();
+
+        for (int i = 0; i < N; i++) {
+            assertEquals(21, data[i]);
         }
     }
 
@@ -326,6 +355,31 @@ public class TestArrays extends TornadoTestBase {
 
         for (char value : c) {
             assertEquals('f', value);
+        }
+    }
+
+    @Test
+    public void testVectorBytes() {
+        final int numElements = 4096;
+        byte[] a = new byte[numElements];
+        byte[] b = new byte[numElements];
+        byte[] c = new byte[numElements];
+
+        IntStream.range(0, numElements).parallel().forEach(idx -> {
+            a[idx] = 10;
+            b[idx] = 11;
+        });
+
+        //@formatter:off
+        new TaskSchedule("s0")
+                .streamIn(a, b)
+                .task("t0", TestArrays::vectorAddByte, a, b, c)
+                .streamOut(c)
+                .execute();
+        //@formatter:on
+
+        for (byte value : c) {
+            assertEquals(21, value);
         }
     }
 

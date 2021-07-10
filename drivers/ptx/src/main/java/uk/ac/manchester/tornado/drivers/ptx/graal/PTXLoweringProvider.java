@@ -84,7 +84,6 @@ import jdk.vm.ci.meta.PrimitiveConstant;
 import jdk.vm.ci.meta.ResolvedJavaField;
 import jdk.vm.ci.meta.ResolvedJavaType;
 import uk.ac.manchester.tornado.drivers.ptx.graal.lir.PTXKind;
-import uk.ac.manchester.tornado.drivers.ptx.graal.lir.PTXWriteNode;
 import uk.ac.manchester.tornado.drivers.ptx.graal.nodes.CastNode;
 import uk.ac.manchester.tornado.drivers.ptx.graal.nodes.FixedArrayNode;
 import uk.ac.manchester.tornado.drivers.ptx.graal.nodes.GlobalThreadIdNode;
@@ -501,21 +500,15 @@ public class PTXLoweringProvider extends DefaultJavaLoweringProvider {
 
     private AbstractWriteNode createMemWriteNode(JavaKind elementKind, ValueNode value, ValueNode array, AddressNode address, StructuredGraph graph, StoreIndexedNode storeIndexed) {
         AbstractWriteNode memoryWrite;
-        if (isSimpleCharOrShort(elementKind, value)) {
-            // XXX: This call is due to an error in Graal when storing a variable of type
-            // char or short. In future integrations with JVMCI and Graal, this issue is
-            // completely solved.
-            memoryWrite = graph.add(new PTXWriteNode(address, NamedLocationIdentity.getArrayLocation(elementKind), value, OnHeapMemoryAccess.BarrierType.NONE, elementKind));
-        } else if (isLocalIDNode(storeIndexed) || isPrivateIDNode(storeIndexed)) {
+        if (isLocalIDNode(storeIndexed) || isPrivateIDNode(storeIndexed)) {
             address = createArrayLocalAddress(graph, array, storeIndexed.index());
-            memoryWrite = graph.add(new WriteNode(address, NamedLocationIdentity.getArrayLocation(elementKind), value, OnHeapMemoryAccess.BarrierType.NONE));
-        } else {
-            memoryWrite = graph.add(new WriteNode(address, NamedLocationIdentity.getArrayLocation(elementKind), value, OnHeapMemoryAccess.BarrierType.NONE));
         }
+        ValueNode storeConvertValue = value;
+        Stamp valueStamp = value.stamp(NodeView.DEFAULT);
+        if (!(valueStamp instanceof PTXStamp) || !((PTXStamp) valueStamp).getPTXKind().isVector()) {
+            storeConvertValue = implicitStoreConvert(graph, elementKind, value);
+        }
+        memoryWrite = graph.add(new WriteNode(address, NamedLocationIdentity.getArrayLocation(elementKind), storeConvertValue, OnHeapMemoryAccess.BarrierType.NONE));
         return memoryWrite;
-    }
-
-    private boolean isSimpleCharOrShort(JavaKind elementKind, ValueNode value) {
-        return (elementKind == JavaKind.Char && value.getStackKind() != JavaKind.Object) || (elementKind == JavaKind.Short && value.getStackKind() != JavaKind.Object);
     }
 }
